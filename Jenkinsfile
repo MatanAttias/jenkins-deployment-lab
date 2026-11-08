@@ -12,12 +12,21 @@ pipeline {
             }
         }
 
-        stage('Deploy Docker Container') {
-            steps{
-                sh '''
-                    docker rm -f service1 || true
-                    docker run -d --name service1 -p 5000:5000 service1:1.1
+        stage('Tag and Push to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-credentials',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_TOKEN'
+                )]) {
+                    sh '''
+                        set +x
+                        echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker tag service1:1.0 "$DOCKER_USER/service1:1.0"
+                        docker push "$DOCKER_USER/service1:1.0"
+                        docker logout
                     '''
+                }
             }
         }
     }

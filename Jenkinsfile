@@ -40,15 +40,10 @@ pipeline {
             }
         }
 
-        // Mission 2 - Step 3: Deployment with Ansible
-        // Temporarily disabled until Step 2 is completed.
-
-        /*
         stage('Deploy with Ansible') {
             steps {
                 sh 'ansible-playbook -i "localhost," -c local deploy-playbook.yml'
             }
         }
-        */
     }
 }

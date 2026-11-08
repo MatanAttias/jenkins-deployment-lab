@@ -11,5 +11,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy Docker Container') {
+            steps{
+                sh '''
+                    docker rm -f service1 || true
+                    docker run -d --name service1 -p 5000:5000 service1:1.1
+                    '''
+            }
+        }
     }
 }

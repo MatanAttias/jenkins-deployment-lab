@@ -14,8 +14,8 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                dir('service1') {
-                    sh 'docker build -t service1:1.0 .'
+                dir("${params.SERVICE}") {
+                    sh "docker build -t ${params.SERVICE}:1.0 ."
                 }
             }
         }
@@ -30,18 +30,25 @@ pipeline {
                     sh '''
                         set +x
                         echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker tag service1:1.0 "$DOCKER_USER/service1:1.0"
-                        docker push "$DOCKER_USER/service1:1.0"
+
+                        docker tag "${SERVICE}:1.0" "$DOCKER_USER/${SERVICE}:1.0"
+                        docker push "$DOCKER_USER/${SERVICE}:1.0"
+
                         docker logout
                     '''
                 }
             }
         }
 
+        // Mission 2 - Step 3: Deployment with Ansible
+        // Temporarily disabled until Step 2 is completed.
+
+        /*
         stage('Deploy with Ansible') {
             steps {
                 sh 'ansible-playbook -i "localhost," -c local deploy-playbook.yml'
             }
         }
+        */
     }
 }

@@ -3,6 +3,14 @@ pipeline {
         label 'ubuntu-agent'
     }
 
+    parameters {
+        choice(
+            name: 'SERVICE',
+            choices: ['service1', 'service2'],
+            description: 'Select the service to deploy'
+        )
+    }
+
     stages {
         stage('Build Docker Image') {
             steps {

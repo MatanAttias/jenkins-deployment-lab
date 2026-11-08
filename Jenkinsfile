@@ -29,5 +29,11 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy with Ansible') {
+            steps {
+                sh 'ansible-playbook -i "localhost," -c local deploy-playbook.yml'
+            }
+        }
     }
 }

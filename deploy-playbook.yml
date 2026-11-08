@@ -1,0 +1,14 @@
+---
+- name: Deploy Flask Application
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Pull Docker image
+      command: docker pull matanatttias/service1:1.0
+
+    - name: Remove existing container
+      shell: docker rm -f service1 || true
+
+    - name: Run Docker container
+      command: docker run -d --name service1 -p 5000:5000 matanatttias/service1:1.0
